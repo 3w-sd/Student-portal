@@ -6,6 +6,46 @@
     <title>Student Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+      .profile-info .details {
+    line-height: 1.8;
+}
+
+.profile-info strong {
+    color: var(--primary-color);
+    min-width: 80px;
+    display: inline-block;
+}
+      /* User Profile in Header */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid white;
+}
+
+.profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.header h1 {
+    flex-grow: 1;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .user-profile span {
+        display: none; /* Hide name on mobile */
+    }
+}
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #3498db;
@@ -176,6 +216,72 @@
             display: none;
         }
 
+        /* New Styles */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .avatar i {
+            font-size: 4rem;
+            color: var(--primary-color);
+        }
+
+        .status-paid {
+            color: #27ae60;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            color: #f1c40f;
+            font-weight: 500;
+        }
+
+        .application-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .application-form select,
+        .application-form textarea {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .attendance-chart {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .sidebar {
@@ -201,42 +307,130 @@
             .header h1 {
                 font-size: 1.25rem;
             }
+
+            .profile-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .quick-stats {
+                grid-template-columns: 1fr;
+            }
         }
+        /* Auth Toggle */
+.auth-toggle {
+  display: flex;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.btn-auth {
+  flex: 1;
+  padding: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-color);
+  border-bottom: 3px solid transparent;
+}
+
+.btn-auth.active {
+  color: var(--secondary-color);
+  border-bottom-color: var(--secondary-color);
+}
+
+.auth-status {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.auth-status.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.auth-status.error {
+  background: #f8d7da;
+  color: #721c24;
+}
     </style>
 </head>
 <body>
     <!-- Login Page -->
-    <div class="login-container" id="loginPage">
-        <div class="login-card">
-            <h2>Student Login</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label>Student ID/Email</label>
-                    <input type="text" id="username" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="password" required>
-                </div>
-                <button type="submit" class="btn">Login</button>
-            </form>
-        </div>
-    </div>
+    <!-- Replace your login-container div with this -->
+<div class="login-container" id="loginPage">
+  <div class="login-card">
+      <!-- Toggle between Login/Signup -->
+      <div class="auth-toggle">
+          <button class="btn-auth active" onclick="showAuthForm('login')">Login</button>
+          <button class="btn-auth" onclick="showAuthForm('signup')">Sign Up</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="auth-form">
+          <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="loginEmail" required>
+          </div>
+          <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="loginPassword" required>
+          </div>
+          <button type="submit" class="btn">Login</button>
+      </form>
+
+      <!-- Signup Form -->
+      <form id="signupForm" class="auth-form hidden">
+          <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="signupName" required>
+          </div>
+          <!-- Inside your signupForm -->
+          <div class="form-group">
+            <label>Student ID</label>
+            <input type="text" id="signupStudentId" required>
+          </div>
+          <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="signupEmail" required>
+          </div>
+          <div class="form-group">
+              <label>Password (min. 6 chars)</label>
+              <input type="password" id="signupPassword" minlength="6" required>
+          </div>
+          <button type="submit" class="btn">Sign Up</button>
+      </form>
+
+      <!-- Auth Status Message -->
+      <div id="authStatus" class="auth-status"></div>
+  </div>
+</div>
 
     <!-- Main Portal -->
     <div class="portal-container hidden" id="portal">
-        <header class="header">
-            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-            <h1>Student Portal</h1>
-            <div class="user-info">
-                <button class="btn" onclick="logout()">Logout</button>
+      <header class="header">
+        <div class="user-profile">
+            <div class="profile-photo">
+                <img id="userPhoto" src="https://upload.wikimedia.org/wikipedia/en/f/fe/National_College_Sudan_Logo.png" alt="Profile Photo">
             </div>
-        </header>
+            <span id="userGreeting">Hi, Student</span>
+        </div>
+        
+        <h1>Student Portal</h1>
+        
+        <div class="user-info">
+            <button class="btn" onclick="logout()">Logout</button>
+        </div>
+    </header>
 
         <nav class="sidebar" id="sidebar">
             <ul class="nav-menu">
                 <li class="nav-item"><a href="#" class="nav-link" onclick="showSection('dashboard')"><i class="fas fa-home"></i>Dashboard</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" onclick="showSection('results')"><i class="fas fa-chart-bar"></i>Results</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="showSection('attendance')"><i class="fas fa-users"></i>Attendance</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" onclick="showSection('fees')"><i class="fas fa-credit-card"></i>Fees</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" onclick="showSection('profile')"><i class="fas fa-user"></i>Profile</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" onclick="showSection('applications')"><i class="fas fa-file"></i>Applications</a></li>
@@ -244,49 +438,318 @@
         </nav>
 
         <main class="main-content" id="mainContent">
-            <!-- Sections same as previous version, but with updated styling -->
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="section">
+                <div class="card">
+                    <h3>Welcome to Your Dashboard</h3>
+                    <div class="quick-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-chart-line"></i>
+                            <h4>Overall GPA</h4>
+                            <p>3.75</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-percent"></i>
+                            <h4>Attendance</h4>
+                            <p>92%</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-wallet"></i>
+                            <h4>Fees Due</h4>
+                            <p>$1,200</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="section hidden">
+                <div class="card">
+                    <h3>Academic Results</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Marks</th>
+                                <th>Grade</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mathematics</td>
+                                <td>85/100</td>
+                                <td>A</td>
+                                <td>Passed</td>
+                            </tr>
+                            <tr>
+                                <td>Physics</td>
+                                <td>78/100</td>
+                                <td>B+</td>
+                                <td>Passed</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Attendance Section -->
+            <div id="attendance" class="section hidden">
+                <div class="card">
+                    <h3>Attendance Record</h3>
+                    <div class="attendance-chart">
+                        <p>Attendance trend visualization placeholder</p>
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <th>Total Classes</th>
+                            <th>Present</th>
+                            <th>Absent</th>
+                            <th>Percentage</th>
+                        </tr>
+                        <tr>
+                            <td>120</td>
+                            <td>110</td>
+                            <td>10</td>
+                            <td>92%</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Fees Section -->
+            <div id="fees" class="section hidden">
+                <div class="card">
+                    <h3>Fee Statement</h3>
+                    <table class="table">
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                        <tr>
+                            <td>2023-09-01</td>
+                            <td>Tuition Fee</td>
+                            <td>$2,000</td>
+                            <td><span class="status-paid">Paid</span></td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-01</td>
+                            <td>Library Fee</td>
+                            <td>$100</td>
+                            <td><span class="status-pending">Pending</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <!-- Inside your profile section -->
+            <div id="profile" class="section hidden">
+              <div class="card">
+                  <h3>Student Profile</h3>
+                  <div class="profile-info">
+                      <div class="avatar">
+                          <i class="fas fa-user-circle"></i>
+                      </div>
+                      <div class="details">
+                          <p><strong>Name:</strong> <span id="profileName">John Doe</span></p>
+                          <p><strong>Student ID:</strong> <span id="profileStudentId">S123456</span></p>
+                          <p><strong>Email:</strong> <span id="profileEmail">john@university.edu</span></p>
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+            <!-- Applications Section -->
+            <div id="applications" class="section hidden">
+                <div class="card">
+                    <h3>My Applications</h3>
+                    <div class="application-form">
+                        <h4>New Application</h4>
+                        <select id="applicationType">
+                            <option value="certificate">Transcript Request</option>
+                            <option value="leave">Leave Application</option>
+                        </select>
+                        <textarea placeholder="Enter application details..."></textarea>
+                        <button class="btn">Submit Application</button>
+                    </div>
+                    <div class="application-history">
+                        <h4>Previous Applications</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                            </tr>
+                            <tr>
+                                <td>2023-09-15</td>
+                                <td>Transcript</td>
+                                <td>Approved</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
-
+    <!-- Add to <head> -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
     <script>
-        // Login Simulation
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+      // Firebase Config (replace with your actual config)
+      const firebaseConfig = {
+  apiKey: "AIzaSyBg5sNXxqRrRz2QoJlhaF7_IHMT4Ogyl_Q",
+  authDomain: "stpo-458da.firebaseapp.com",
+  projectId: "stpo-458da",
+  storageBucket: "stpo-458da.firebasestorage.app",
+  messagingSenderId: "524488897045",
+  appId: "1:524488897045:web:91c00fd0adf49c7b6a141c",
+  measurementId: "G-5NQCQHZBDP"
+};
 
-            // Simple validation (in real app, use proper authentication)
-            if(username && password) {
-                document.getElementById('loginPage').classList.add('hidden');
-                document.getElementById('portal').classList.remove('hidden');
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// Auth UI Toggle
+function showAuthForm(formType) {
+  document.querySelectorAll('.auth-form').forEach(form => {
+    form.classList.add('hidden');
+  });
+  document.getElementById(`${formType}Form`).classList.remove('hidden');
+  
+  document.querySelectorAll('.btn-auth').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  event.target.classList.add('active');
+}
+
+// Sign Up
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('signupEmail').value;
+  const password = document.getElementById('signupPassword').value;
+  const name = document.getElementById('signupName').value;
+  const studentId = document.getElementById('signupStudentId').value;
+  // In your signup form submission:
+const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+
+// Update user profile
+await auth.currentUser.updateProfile({
+    displayName: name
+});
+
+// Save to Firestore
+await db.collection('users').doc(userCredential.user.uid).set({
+    name: name,
+    email: email,
+    studentId: studentId, // <-- Add Student ID here
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+});
+
+  try {
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    
+    // Save additional user data to Firestore
+    await db.collection('users').doc(userCredential.user.uid).set({
+      name: name,
+      email: email,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    
+    showMessage('Signup successful! Redirecting...', 'success');
+    setTimeout(() => location.reload(), 1500);
+  } catch (error) {
+    showMessage(error.message, 'error');
+  }
+});
+
+// Login
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+
+  try {
+    await auth.signInWithEmailAndPassword(email, password);
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('portal').classList.remove('hidden');
+  } catch (error) {
+    showMessage(error.message, 'error');
+  }
+});
+
+// Logout
+function logout() {
+  auth.signOut().then(() => {
+    document.getElementById('portal').classList.add('hidden');
+    document.getElementById('loginPage').classList.remove('hidden');
+  });
+}
+
+// Auth State Listener
+
+  auth.onAuthStateChanged(user => {
+
+    if (user) {
+        // Show portal
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('portal').classList.remove('hidden');
+        
+        // Update user info in header
+        document.getElementById('userGreeting').textContent = `Hi, ${user.displayName || 'Student'}`;
+        
+        // Load user photo (if available)
+        if (user.photoURL) {
+            document.getElementById('userPhoto').src = user.photoURL;
+        }
+        
+        // Fetch additional user data from Firestore
+        db.collection('users').doc(user.uid).get().then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+                if (userData.name) {
+                    document.getElementById('userGreeting').textContent = `Hi, ${userData.name}`;
+                }
+                if (userData.photoURL) {
+                    document.getElementById('userPhoto').src = userData.photoURL;
+                }
             }
         });
+    }
+});
 
-        // Sidebar Toggle
+// Helper: Show status messages
+function showMessage(message, type) {
+  const statusEl = document.getElementById('authStatus');
+  statusEl.textContent = message;
+  statusEl.className = `auth-status ${type}`;
+  setTimeout(() => statusEl.textContent = '', 3000);
+}
+
+// Keep your existing functions (toggleSidebar, showSection, etc.)
+        
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
         }
 
-        // Section Navigation
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(div => {
                 div.classList.add('hidden');
             });
             document.getElementById(sectionId).classList.remove('hidden');
             
-            // Hide sidebar on mobile after selection
             if(window.innerWidth <= 768) {
                 toggleSidebar();
             }
         }
 
-        // Logout Function
-        function logout() {
-            document.getElementById('portal').classList.add('hidden');
-            document.getElementById('loginPage').classList.remove('hidden');
-        }
+        
 
-        // Close sidebar when clicking outside on mobile
         document.addEventListener('click', function(e) {
             const sidebar = document.getElementById('sidebar');
             if(window.innerWidth <= 768 && !e.target.closest('.sidebar') && !e.target.closest('.menu-toggle')) {
@@ -294,7 +757,6 @@
             }
         });
 
-        // Initialize default section
         showSection('dashboard');
     </script>
 </body>
